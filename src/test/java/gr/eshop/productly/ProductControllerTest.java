@@ -1,24 +1,28 @@
-package gr.eshop.productly.controller;
+package gr.eshop.productly;
 
 import gr.eshop.productly.model.Product;
 import gr.eshop.productly.repository.ProductRepository;
+import gr.eshop.productly.controller.ProductController;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
@@ -36,7 +40,6 @@ class ProductControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
-
     @Test
     void testShowAddForm() throws Exception {
         mockMvc.perform(get("/products/add"))
@@ -50,9 +53,9 @@ class ProductControllerTest {
         when(productRepository.save(any(Product.class))).thenReturn(new Product("Product3", "Description3", 30.0));
 
         mockMvc.perform(post("/products/add")
-                        .param("name", "Product3")
-                        .param("description", "Description3")
-                        .param("price", "30.0"))
+                .param("name", "Product3")
+                .param("description", "Description3")
+                .param("price", "30.0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/products"));
     }
@@ -76,9 +79,9 @@ class ProductControllerTest {
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         mockMvc.perform(post("/products/edit/1")
-                        .param("name", "UpdatedProduct")
-                        .param("description", "UpdatedDescription")
-                        .param("price", "15.0"))
+                .param("name", "UpdatedProduct")
+                .param("description", "UpdatedDescription")
+                .param("price", "15.0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/products"));
     }
