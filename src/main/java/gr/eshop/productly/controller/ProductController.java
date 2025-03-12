@@ -5,12 +5,19 @@ import gr.eshop.productly.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
 
+        /**
+         * Product repository.
+         */
         @Autowired
         private ProductRepository productRepository;
 
@@ -29,12 +36,12 @@ public class ProductController {
         /**
          * Shows form to add a product.
          * 
-         * @param model
-         * @return
+         * @param model 
+         * @return view containing the form for adding a product
          */
         @GetMapping("/add")
         public String showAddForm(Model model) {
-                model.addAttribute("products", new Product());
+                model.addAttribute("product", new Product());
                 return "add-product";
         }
 
@@ -42,7 +49,7 @@ public class ProductController {
          * Processes adding a product.
          * 
          * @param product
-         * @return
+         * @return redirection after adding the product.
          */
         @PostMapping("/add")
         public String addProduct(@ModelAttribute Product product) {
@@ -55,7 +62,7 @@ public class ProductController {
          * 
          * @param id
          * @param model
-         * @return
+         * @return view of the edit form for editing the product.
          */
         @GetMapping("/edit/{id}")
         public String showEditForm(@PathVariable Long id, Model model) {
@@ -70,7 +77,7 @@ public class ProductController {
          * 
          * @param id
          * @param product
-         * @return
+         * @return redirection after editing the product.
          */
         @PostMapping("/edit/{id}")
         public String editProduct(@PathVariable Long id, @ModelAttribute Product product) {
@@ -79,10 +86,15 @@ public class ProductController {
                 return "redirect:/products";
         }
 
+        /**
+         * Deletes a product.
+         * 
+         * @param id
+         * @return redirection after deleting the product.
+         */
         @GetMapping("/delete/{id}")
         public String deleteProduct(@PathVariable Long id) {
                 productRepository.deleteById(id);
                 return "redirect:/products";
         }
-
 }
