@@ -1,0 +1,42 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]  # Runs only when pushing to the main branch
+  pull_request:
+    branches: [main]  # Runs on pull requests targeting the main branch
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]  # Multiple platforms
+    runs-on: ${{ matrix.os }}  # Run on each platform
+    steps:
+      - uses: actions/checkout@v4  
+      - uses: actions/setup-java@v4  
+        with:
+          distribution: 'temurin'  
+          java-version: 'latest'  
+          cache: 'maven'
+      - uses: actions/cache@v3  # Caches Maven dependencies to speed up builds
+        with:
+          path: ~/.m2  
+          key: maven-${{ hashFiles('**/pom.xml') }}  # Generates cache key based on `pom.xml`
+          restore-keys: maven-  # Allows fallback to older cache versions
+      - name: Run Checkstyle
+        run: mvn checkstyle:check  # Ensures code quality
+      - name: Run JaCoCo Test Coverage
+        run: mvn test jacoco:report  # Generates test coverage reports
+      - name: Run Integration Tests
+        run: mvn verify  # Runs integration tests
+      - name: Build Docker Image
+        run: docker build -t myapp:latest .
+      - name: Push Docker Image
+        run: docker push myapp:latest
+
+  deploy:
+    needs: build  # Only runs when a build succeeds
+    runs-on: ubuntu-latest  
+    steps:
+      - run: echo "Deploying application..."
