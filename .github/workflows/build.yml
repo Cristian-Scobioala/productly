@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-java@v4  
         with:
           distribution: 'temurin'  
-          java-version: 'latest'  
+          java-version: '21'  
           cache: 'maven'
       - uses: actions/cache@v3  # Caches Maven dependencies to speed up builds
         with:
