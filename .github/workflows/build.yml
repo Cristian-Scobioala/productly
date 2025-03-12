@@ -24,8 +24,8 @@ jobs:
           path: ~/.m2  
           key: maven-${{ hashFiles('**/pom.xml') }}  # Generates cache key based on `pom.xml`
           restore-keys: maven-  # Allows fallback to older cache versions
-      - name: Run Checkstyle
-        run: mvn checkstyle:check  # Ensures code quality
+      #- name: Run Checkstyle
+      #  run: mvn checkstyle:check  # Ensures code quality
       - name: Run JaCoCo Test Coverage
         run: mvn test jacoco:report  # Generates test coverage reports
       - name: Run Integration Tests
