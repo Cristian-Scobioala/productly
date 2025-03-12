@@ -35,7 +35,7 @@ jobs:
         run: ls -la
 
       - name: Build Docker Image
-        run: docker build -t myapp:latest -f Dockerfile . .
+        run: docker build -t myapp:latest -f DOCKERFILE. .
 
       - name: Push Docker Image
         run: docker push myapp:latest
