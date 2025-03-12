@@ -32,7 +32,7 @@ jobs:
         run: docker --version
 
       - name: Build Docker Image
-        run: docker build -t myapp:latest .
+        run: docker build -t myapp:latest -f Dockerfile . .
 
       - name: Push Docker Image
         run: docker push myapp:latest
