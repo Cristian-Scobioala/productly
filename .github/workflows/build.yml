@@ -30,6 +30,9 @@ jobs:
 
       - name: Check Docker Installation
         run: docker --version
+      
+      - name: Verify Dockerfile Exists
+        run: ls -la
 
       - name: Build Docker Image
         run: docker build -t myapp:latest -f Dockerfile . .
