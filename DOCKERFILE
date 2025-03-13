@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-slim
 # set a working directory in the container
 WORKDIR /app
 
-# copy the built JAR  into the container
+# copy the built JAR  into the containers
 COPY target/productly-*.jar app.jar
 
 EXPOSE 8080
